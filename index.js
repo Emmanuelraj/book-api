@@ -42,11 +42,18 @@ app.use(express.json());
 
 const books=[];
 
+let countNoOfRequests = 0;
+
 app.get("/books",(req,res)=>{
-    res.status(200).send({books});
+    console.log(countNoOfRequests++);
+    res.status(200).send(
+      {books: books, 
+      count : countNoOfRequests
+      });
 });
 
  function checkBookExistOrNot(id){
+
  return new Promise( (resolve,reject)=>{
   let individual = null;
    books.forEach((book)=>{
@@ -65,6 +72,7 @@ app.get("/books",(req,res)=>{
 }
 
 app.get('/books/:id',async(req,res)=>{
+  console.log(countNoOfRequests++);
     const id = req.params.id;
     let individual = await checkBookExistOrNot(id);
     if(individual===null)
